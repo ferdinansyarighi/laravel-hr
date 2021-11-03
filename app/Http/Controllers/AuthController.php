@@ -18,10 +18,11 @@ class AuthController extends Controller
                 'email'    => 'required',
                 'password' => 'required',
             ]);
-
+        
+        $remember = $request->has('remember')? true:false;
         $credentials = $request->only('email','password');
 
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt($credentials,$remember)){
             $user = Auth::user();
 
             if ($user->level == 'admin'){

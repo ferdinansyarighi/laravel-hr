@@ -13,10 +13,20 @@
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/auroracms.css') }}">
+    
+    <link href="https://fonts.cdnfonts.com/css/copyright-violations" rel="stylesheet">
 </head>
 
+<style>
+  a:hover {
+    color: #5e6699;
+    text-decoration: none;
+  }
+</style>
+
 <body class="hold-transition login-page">
+
 <div class="login-box">
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
@@ -31,7 +41,7 @@
     @endif
 
     <div class="card-header text-center">
-      <a href="#" class="h1">AURORASHINE</a>
+      <a href="https://aurorashine.id/" class="h1" style="font-family:'Copyright Violations'">AURORASHINE</a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
@@ -68,12 +78,12 @@
           </div>
         </div>
         @if($errors->has('password'))
-            <span class="error">{{ $errors->first('password') }}</span>
+          <span class="error">{{ $errors->first('password') }}</span>
         @endif
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember_me">
+              <input type="checkbox" id="remember" name="remember">
               <label for="remember">
                 Remember Me
               </label>
