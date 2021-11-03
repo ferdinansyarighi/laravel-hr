@@ -14,25 +14,17 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/dist/css/auroracms.css') }}">
-    
-    <link href="https://fonts.cdnfonts.com/css/copyright-violations" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/custom/css/login.css') }}">
 </head>
 
-<style>
-  a:hover {
-    color: #5e6699;
-    text-decoration: none;
-  }
-</style>
-
-<body class="hold-transition login-page">
+<body class="hold-transition login-page mainBg">
 
 <div class="login-box">
   <!-- /.login-logo -->
-  <div class="card card-outline card-primary">
+  <div id="loginCard" class="card card-outline card-primary">
 
     @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="alert alert-coloring alert-danger alert-dismissible fade show" role="alert">
         {{session('error')}}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -41,15 +33,15 @@
     @endif
 
     <div class="card-header text-center">
-      <a href="https://aurorashine.id/" class="h1" style="font-family:'Copyright Violations'">AURORASHINE</a>
+      <a id="loginTitle" href="https://aurorashine.id/" class="h1">Sign In</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg pLogin">Masuk dan buat undanganmu !</p>
 
       <form action="{{url('proses_login')}}" method="POST">
         {{ csrf_field() }}
         @error('login_gagal')
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div class="alert alert-coloring alert-warning alert-dismissible fade show" role="alert">
                 <span class="alert-inner--text"><strong>Warning!</strong> {{ $message }}</span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -84,14 +76,14 @@
           <div class="col-8">
             <div class="icheck-primary">
               <input type="checkbox" id="remember" name="remember">
-              <label for="remember">
-                Remember Me
+              <label for="remember" class="pLogin">
+                Ingat saya
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-coloring btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -108,11 +100,12 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="forgot-password.html" class="pLink">Lupa password?</a>
       </p>
       <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new account</a>
+        Belum punya akun? <a href="register.html" class="text-center pLink">Daftar sekarang</a>
       </p>
+      <p class="mt-4 mb-0 footer-styling pLogin">Copyright &copy; 2021 Aurorashine Digital QR Invitation</p>
     </div>
     <!-- /.card-body -->
   </div>
