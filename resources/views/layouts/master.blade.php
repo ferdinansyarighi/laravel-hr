@@ -50,7 +50,11 @@
       @include('layouts.nav-head')
 
       <!-- Main Sidebar Container -->
-      @include('layouts.sidebar')
+      @if (Auth::user()->level === 'user')
+        @include('layouts.sidebar')
+      @else
+        @include('layouts.sidebar_admin')
+      @endif
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">

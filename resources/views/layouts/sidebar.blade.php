@@ -19,7 +19,7 @@
           <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div> --}}
         <div class="info">
-          <a href="#" class="d-block">Hello, Nama User</a>
+          <a href="#" class="d-block">Hello, {{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -33,6 +33,15 @@
               <i class="nav-icon fa fa-user"></i>
               <p>
                 Dashboard
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('logout') }}" class="nav-link {{ (request()->is('logout')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                Logout
               </p>
             </a>
           </li>
