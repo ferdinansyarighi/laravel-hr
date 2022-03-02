@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@yield('title','ArtMoney')</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <title>@yield('title','Aurorashine')</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -31,6 +32,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/dist/css/auroracms.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.scss') }}">
   <!-- Sweetalert2 -->
   <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -43,7 +45,7 @@
   <div class="wrapper">
       <!-- Preloader -->
       <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="{{ asset('assets/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
+        <img class="animation__shake" src="{{ asset('assets/dist/img/logo.svg') }}" alt="Aurorashine Logo" height="60" width="60">
       </div>
 
       <!-- Main Header -->

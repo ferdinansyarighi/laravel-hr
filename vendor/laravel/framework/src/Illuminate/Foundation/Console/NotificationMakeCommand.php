@@ -18,6 +18,15 @@ class NotificationMakeCommand extends GeneratorCommand
     protected $name = 'make:notification';
 
     /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     */
+    protected static $defaultName = 'make:notification';
+
+    /**
      * The console command description.
      *
      * @var string
@@ -76,7 +85,7 @@ class NotificationMakeCommand extends GeneratorCommand
         $class = parent::buildClass($name);
 
         if ($this->option('markdown')) {
-            $class = str_replace('DummyView', $this->option('markdown'), $class);
+            $class = str_replace(['DummyView', '{{ view }}'], $this->option('markdown'), $class);
         }
 
         return $class;

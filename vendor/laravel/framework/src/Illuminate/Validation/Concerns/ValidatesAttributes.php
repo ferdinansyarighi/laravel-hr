@@ -2,15 +2,14 @@
 
 namespace Illuminate\Validation\Concerns;
 
-use Countable;
 use DateTime;
 use DateTimeInterface;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
+use Egulias\EmailValidator\Validation\Extra\SpoofCheckValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\NoRFCWarningsValidation;
 use Egulias\EmailValidator\Validation\RFCValidation;
-use Egulias\EmailValidator\Validation\SpoofCheckValidation;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -54,6 +53,45 @@ trait ValidatesAttributes
         $acceptable = ['yes', 'on', '1', 1, true, 'true'];
 
         $this->requireParameterCount(2, $parameters, 'accepted_if');
+
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
+
+        if (in_array($other, $values, is_bool($other) || is_null($other))) {
+            return $this->validateRequired($attribute, $value) && in_array($value, $acceptable, true);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate that an attribute was "declined".
+     *
+     * This validation rule implies the attribute is "required".
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function validateDeclined($attribute, $value)
+    {
+        $acceptable = ['no', 'off', '0', 0, false, 'false'];
+
+        return $this->validateRequired($attribute, $value) && in_array($value, $acceptable, true);
+    }
+
+    /**
+     * Validate that an attribute was "declined" when another attribute has a given value.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateDeclinedIf($attribute, $value, $parameters)
+    {
+        $acceptable = ['no', 'off', '0', 0, false, 'false'];
+
+        $this->requireParameterCount(2, $parameters, 'declined_if');
 
         [$values, $other] = $this->parseDependentRuleParameters($parameters);
 
@@ -226,7 +264,11 @@ trait ValidatesAttributes
         $firstDate = $this->getDateTimeWithOptionalFormat($format, $first);
 
         if (! $secondDate = $this->getDateTimeWithOptionalFormat($format, $second)) {
-            $secondDate = $this->getDateTimeWithOptionalFormat($format, $this->getValue($second));
+            if (is_null($second = $this->getValue($second))) {
+                return true;
+            }
+
+            $secondDate = $this->getDateTimeWithOptionalFormat($format, $second);
         }
 
         return ($firstDate && $secondDate) && ($this->compare($firstDate, $secondDate, $operator));
@@ -329,6 +371,29 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that an array has all of the given keys.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @return bool
+     */
+    public function validateRequiredArrayKeys($attribute, $value, $parameters)
+    {
+        if (! is_array($value)) {
+            return false;
+        }
+
+        foreach ($parameters as $param) {
+            if (! Arr::exists($value, $param)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Validate the size of an attribute is between a set of values.
      *
      * @param  string  $attribute
@@ -406,7 +471,11 @@ trait ValidatesAttributes
             return true;
         }
 
-        if ((! is_string($value) && ! is_numeric($value)) || strtotime($value) === false) {
+        try {
+            if ((! is_string($value) && ! is_numeric($value)) || strtotime($value) === false) {
+                return false;
+            }
+        } catch (Exception $e) {
             return false;
         }
 
@@ -512,7 +581,7 @@ trait ValidatesAttributes
 
         $length = strlen((string) $value);
 
-        return ! preg_match('/[^0-9]/', $value)
+        return ! preg_match('/[^0-9.]/', $value)
                     && $length >= $parameters[0] && $length <= $parameters[1];
     }
 
@@ -796,7 +865,7 @@ trait ValidatesAttributes
      */
     protected function getUniqueIds($idColumn, $parameters)
     {
-        $idColumn = $idColumn ?? $parameters[3] ?? 'id';
+        $idColumn ??= $parameters[3] ?? 'id';
 
         return [$idColumn, $this->prepareUniqueId($parameters[2])];
     }
@@ -847,15 +916,15 @@ trait ValidatesAttributes
      */
     public function parseTable($table)
     {
-        [$connection, $table] = Str::contains($table, '.') ? explode('.', $table, 2) : [null, $table];
+        [$connection, $table] = str_contains($table, '.') ? explode('.', $table, 2) : [null, $table];
 
-        if (Str::contains($table, '\\') && class_exists($table) && is_a($table, Model::class, true)) {
+        if (str_contains($table, '\\') && class_exists($table) && is_a($table, Model::class, true)) {
             $model = new $table;
 
             $table = $model->getTable();
-            $connection = $connection ?? $model->getConnectionName();
+            $connection ??= $model->getConnectionName();
 
-            if (Str::contains($table, '.') && Str::startsWith($table, $connection)) {
+            if (str_contains($table, '.') && Str::startsWith($table, $connection)) {
                 $connection = null;
             }
 
@@ -1188,6 +1257,18 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that an attribute is a valid MAC address.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function validateMacAddress($attribute, $value)
+    {
+        return filter_var($value, FILTER_VALIDATE_MAC) !== false;
+    }
+
+    /**
      * Validate the attribute is a valid JSON string.
      *
      * @param  string  $attribute
@@ -1290,7 +1371,7 @@ trait ValidatesAttributes
         }
 
         $phpExtensions = [
-            'php', 'php3', 'php4', 'php5', 'phtml',
+            'php', 'php3', 'php4', 'php5', 'phtml', 'phar',
         ];
 
         return ($value instanceof UploadedFile)
@@ -1374,19 +1455,6 @@ trait ValidatesAttributes
     }
 
     /**
-     * Validate that the password of the currently authenticated user matches the given value.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @param  array  $parameters
-     * @return bool
-     */
-    protected function validatePassword($attribute, $value, $parameters)
-    {
-        return $this->validateCurrentPassword($attribute, $value, $parameters);
-    }
-
-    /**
      * Validate that an attribute exists even if not filled.
      *
      * @param  string  $attribute
@@ -1449,7 +1517,7 @@ trait ValidatesAttributes
             return false;
         } elseif (is_string($value) && trim($value) === '') {
             return false;
-        } elseif ((is_array($value) || $value instanceof Countable) && count($value) < 1) {
+        } elseif (is_countable($value) && count($value) < 1) {
             return false;
         } elseif ($value instanceof File) {
             return (string) $value->getPath() !== '';
@@ -1488,7 +1556,6 @@ trait ValidatesAttributes
      *
      * @param  string  $attribute
      * @param  mixed  $value
-     * @param  mixed  $parameters
      * @return bool
      */
     public function validateProhibited($attribute, $value)
@@ -2005,20 +2072,14 @@ trait ValidatesAttributes
      */
     protected function compare($first, $second, $operator)
     {
-        switch ($operator) {
-            case '<':
-                return $first < $second;
-            case '>':
-                return $first > $second;
-            case '<=':
-                return $first <= $second;
-            case '>=':
-                return $first >= $second;
-            case '=':
-                return $first == $second;
-            default:
-                throw new InvalidArgumentException;
-        }
+        return match ($operator) {
+            '<' => $first < $second,
+            '>' => $first > $second,
+            '<=' => $first <= $second,
+            '>=' => $first >= $second,
+            '=' => $first == $second,
+            default => throw new InvalidArgumentException,
+        };
     }
 
     /**

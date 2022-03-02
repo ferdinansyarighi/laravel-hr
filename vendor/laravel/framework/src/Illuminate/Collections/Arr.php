@@ -122,6 +122,23 @@ class Arr
     }
 
     /**
+     * Convert a flatten "dot" notation array into an expanded array.
+     *
+     * @param  iterable  $array
+     * @return array
+     */
+    public static function undot($array)
+    {
+        $results = [];
+
+        foreach ($array as $key => $value) {
+            static::set($results, $key, $value);
+        }
+
+        return $results;
+    }
+
+    /**
      * Get all of the given array except for a specified array of keys.
      *
      * @param  array  $array
@@ -297,7 +314,7 @@ class Arr
             return $array[$key];
         }
 
-        if (strpos($key, '.') === false) {
+        if (! str_contains($key, '.')) {
             return $array[$key] ?? value($default);
         }
 
@@ -404,6 +421,18 @@ class Arr
     public static function isList($array)
     {
         return ! self::isAssoc($array);
+    }
+
+    /**
+     * Key an associative array by a field or using a callback.
+     *
+     * @param  array  $array
+     * @param  callable|array|string
+     * @return array
+     */
+    public static function keyBy($array, $keyBy)
+    {
+        return Collection::make($array)->keyBy($keyBy)->all();
     }
 
     /**
@@ -698,6 +727,19 @@ class Arr
     public static function where($array, callable $callback)
     {
         return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
+     * Filter items where the value is not null.
+     *
+     * @param  array  $array
+     * @return array
+     */
+    public static function whereNotNull($array)
+    {
+        return static::where($array, function ($value) {
+            return ! is_null($value);
+        });
     }
 
     /**

@@ -153,7 +153,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the given "number" is actually an array or countable we will simply count the
         // number of elements in an instance. This allows developers to pass an array of
         // items without having to count it on their end first which gives bad syntax.
-        if (is_array($number) || $number instanceof Countable) {
+        if (is_countable($number)) {
             $number = count($number);
         }
 
@@ -218,9 +218,9 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         $shouldReplace = [];
 
         foreach ($replace as $key => $value) {
-            $shouldReplace[':'.$key] = $value;
-            $shouldReplace[':'.Str::upper($key)] = Str::upper($value);
             $shouldReplace[':'.Str::ucfirst($key)] = Str::ucfirst($value);
+            $shouldReplace[':'.Str::upper($key)] = Str::upper($value);
+            $shouldReplace[':'.$key] = $value;
         }
 
         return strtr($line, $shouldReplace);

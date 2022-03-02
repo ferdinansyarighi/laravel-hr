@@ -19,6 +19,15 @@ class ListenerMakeCommand extends GeneratorCommand
     protected $name = 'make:listener';
 
     /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     */
+    protected static $defaultName = 'make:listener';
+
+    /**
      * The console command description.
      *
      * @var string
@@ -47,15 +56,15 @@ class ListenerMakeCommand extends GeneratorCommand
             'Illuminate',
             '\\',
         ])) {
-            $event = $this->laravel->getNamespace().'Events\\'.$event;
+            $event = $this->laravel->getNamespace().'Events\\'.str_replace('/', '\\', $event);
         }
 
         $stub = str_replace(
-            'DummyEvent', class_basename($event), parent::buildClass($name)
+            ['DummyEvent', '{{ event }}'], class_basename($event), parent::buildClass($name)
         );
 
         return str_replace(
-            'DummyFullEvent', trim($event, '\\'), $stub
+            ['DummyFullEvent', '{{ eventNamespace }}'], trim($event, '\\'), $stub
         );
     }
 

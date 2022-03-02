@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','ArtMoney')
+@section('title','Invitation Builder')
 
 @section('content')
     <!-- Content Header (Page header) -->

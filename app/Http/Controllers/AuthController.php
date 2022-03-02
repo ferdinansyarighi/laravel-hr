@@ -12,6 +12,10 @@ class AuthController extends Controller
         return view('login_v');
     }
 
+    public function register(){
+        return view('register_v');
+    }
+
     public function proses_login(Request $request){
         request()->validate(
             [
