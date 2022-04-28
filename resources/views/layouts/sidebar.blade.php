@@ -8,7 +8,7 @@
     <!-- Brand Logo -->
     <a href="{{ route('dashboard') }}" class="brand-link">
       <img src="{{ asset('assets/dist/img/logo.svg') }}" alt="Aurorashine Logo" class="brand-image img-rounded-box elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light"><strong>AURORASHINE</strong></span>
+      <span class="brand-text font-weight-light"><strong>HR SYSTEM</strong></span>
     </a>
 
     <!-- Sidebar -->

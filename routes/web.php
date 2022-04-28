@@ -26,7 +26,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::group(['middleware' => ['cek_login:admin']], function(){
         Route::get('dashboard_admin', 'App\Http\Controllers\Dashboard_c@admin')->name('dashboard_admin');
-        Route::post('setSession', 'App\Http\Controllers\Dashboard_c@setSession')->name('setSession');
+        Route::post('getData', 'App\Http\Controllers\Dashboard_c@getDAta')->name('getData');
+        Route::post('saveData', 'App\Http\Controllers\Permit_c@saveData')->name('saveData');
+        Route::get('permit_admin', 'App\Http\Controllers\Permit_c@admin')->name('permit_admin');
     });
 
     Route::group(['middleware' => ['cek_login:user']], function(){

@@ -15,19 +15,19 @@ class Dashboard_c extends Controller
         return view('dashboard_admin_v');
     }
 
-    public function setSession(Request $request){
-        $url = $request->url;
+    public function getData(){
+        // $url = $request->url;
 
-        $users = DB::table('users')
-            ->where('url', $url)
-            ->first();
+        $attend = DB::table('attendance')
+        ->join('users', 'attendance.user_id', '=', 'users.id')
+        ->select('users.name', 'attendance.*')
+        ->get();
         
-        session(['id'=>$users->id]);
-        session(['url'=>$users->url]);
-        session(['email'=>$users->email]);
+        // session(['id'=>$users->id]);
+        // session(['email'=>$users->email]);
 
         return response()->json([
-            'data'=> $users
+            'data'=> $attend
         ]); 
     }
 }

@@ -8,7 +8,7 @@
   <!-- Brand Logo -->
   <a href="{{ route('dashboard_admin') }}" class="brand-link">
     <img src="{{ asset('assets/dist/img/logo.svg') }}" alt="Aurorashine Logo" class="brand-image img-rounded-box elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light"><strong>AURORASHINE</strong></span>
+    <span class="brand-text font-weight-light"><strong>HR SYSTEM</strong></span>
   </a>
 
   <!-- Sidebar -->
@@ -32,7 +32,15 @@
           <a href="{{ route('dashboard_admin') }}" class="nav-link {{ (request()->is('dashboard_admin')) ? 'active' : '' }}">
             <i class="nav-icon fa fa-user"></i>
             <p>
-              Dashboard
+              Attendance
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('permit_admin') }}" class="nav-link {{ (request()->is('permit_admin')) ? 'active' : '' }}">
+            <i class="nav-icon fa fa-calendar"></i>
+            <p>
+              Permission
             </p>
           </a>
         </li>

@@ -1,9 +1,9 @@
   <footer class="main-footer">
     <strong>Copyright &copy; 2019-2022 
       @if (Auth::user()->level === 'user')
-        <a href="{{ route('dashboard') }}">Aurorashine Digital Invitation</a>.
+        <a href="{{ route('dashboard') }}">Muhammad Ferdinansyah Arighi</a>.
       @else
-        <a href="{{ route('dashboard_admin') }}">Aurorashine Digital Invitation</a>.
+        <a href="{{ route('dashboard_admin') }}">Muhammad Ferdinansyah Arighi</a>.
       @endif
     </strong>
     All rights reserved.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>@yield('title','Aurorashine')</title>
+  <title>@yield('title','HR System')</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css') }}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('assets/dist/css/auroracms.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/dist/css/cms.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.scss') }}">
   <!-- Sweetalert2 -->
   <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
@@ -45,7 +45,7 @@
   <div class="wrapper">
       <!-- Preloader -->
       <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="{{ asset('assets/dist/img/logo.svg') }}" alt="Aurorashine Logo" height="60" width="60">
+        <img class="animation__shake" src="{{ asset('assets/dist/img/logo.svg') }}" alt="Logo" height="60" width="60">
       </div>
 
       <!-- Main Header -->
@@ -125,6 +125,8 @@
 <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 {{-- toastr --}}
 <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+<!-- main -->
+<script src="{{ asset('assets/dist/js/main.js') }}"></script>
 
 <!--Change Database Function -->
 <script type="text/javascript">

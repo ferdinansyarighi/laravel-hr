@@ -17,21 +17,17 @@ class UserSeeder extends Seeder
     {
         $user = [
             [
-                'name'          => 'Admin Auroshine',
-                'url'           => 'venni-ferdi',
-                'email'         => 'cs@aurorashine.id',
-                'password'      => bcrypt('admin123'),
+                'name'          => 'Rudi Irsyad',
+                'email'         => 'rudi@gmail.com',
+                'password'      => bcrypt('rudi123'),
                 'level'         => 'admin',
-                'gender'        => 'F',
                 'active_until'  => Carbon::now()
             ],
             [
-                'name'          => 'User Auroshine',
-                'url'           => 'ferdi-venni',
-                'email'         => 'support@aurorashine.id',
-                'password'      => bcrypt('user123'),
+                'name'          => 'Intan Tania',
+                'email'         => 'intan@gmail.com',
+                'password'      => bcrypt('intan123'),
                 'level'         => 'user',
-                'gender'        => 'M',
                 'active_until'  => Carbon::now()
             ]
         ];
